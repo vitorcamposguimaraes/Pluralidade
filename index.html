@@ -108,7 +108,70 @@
     </div></div></section>
 
     <section class="section-pad coverage-section" id="cobertura"><div class="container-fluid site-shell">
-      <div class="row g-5 align-items-end mb-5"><div class="col-lg-3"><p class="section-label"><span>06</span> Plano de cobertura</p></div><div class="col-lg-8 offset-lg-1"><h2 class="section-title">O que observar.<br><span>Como transformar em história.</span></h2><p class="coverage-intro">O mapa reúne todos os tópicos da pauta. Os filtros ajudam a distribuir equipes e a equilibrar espaços, pessoas, ações e evidências.</p></div></div>
+      <div class="row g-5 align-items-end mb-5"><div class="col-lg-3"><p class="section-label"><span>06</span> Plano de cobertura</p></div><div class="col-lg-8 offset-lg-1"><h2 class="section-title">O que observar.<br><span>Como transformar em história.</span></h2><p class="coverage-intro">O mapa reúne todos os tópicos da pauta. Os filtros ajudam a distribuir equipes e a equilibrar espaços, pessoas, ações e evidências.</p></div>
+		
+		
+		<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Encontro de diferenças — Pluralidade em Cena</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101324;color:#f7f4ef;font-family:system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:28px}header{display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-size:12px;letter-spacing:3px;color:#c3bbff}h1{font-size:clamp(28px,5vw,48px);letter-spacing:-1.5px;margin:16px 0 8px}p{color:#c6cadb;line-height:1.6;margin:8px 0}.stage{position:relative;height:clamp(260px,48vw,410px);border:1px solid #35394e;border-radius:24px;background:radial-gradient(ellipse at 50% 80%,#333154,#171b2e 70%);overflow:hidden;margin:24px 0 16px}canvas{width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab}.hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:12px;color:#c8cce0;pointer-events:none}.controls{display:flex;gap:8px;flex-wrap:wrap}button{border:1px solid #555b77;background:#22283e;color:#fff;border-radius:30px;padding:11px 17px;cursor:pointer;font:inherit;font-size:14px}button:hover,button[aria-pressed=true]{background:#e6ddff;color:#17172b}button:focus-visible{outline:3px solid #ffca68;outline-offset:3px}button:disabled{opacity:.5;cursor:wait}.message{min-height:76px;border-left:3px solid #c1a4ff;padding:4px 16px;margin-top:22px}.message strong{font-size:18px}.message p{margin:5px 0}.small{font-size:12px}#loading{position:absolute;inset:30% 10%;text-align:center}footer{margin-top:18px;color:#9ea5bc;font-size:12px}@media(max-width:500px){main{padding:20px}header{align-items:start}.controls button{padding:10px 13px}}
+</style>
+<main>
+<header><span class="brand">PLURALIDADE EM CENA</span><span class="small">Um encontro em 3D</span></header>
+<h1>Cada diferença tem seu lugar.</h1>
+<p>Escolha uma personagem e descubra o que podemos construir juntos.</p>
+<div class="stage" id="stage"><div id="loading" role="status">Preparando nosso encontro…</div><div class="hint">Arraste para girar • Toque nas personagens</div></div>
+<div class="controls" id="choices" aria-label="Escolha um valor"></div>
+<div class="message" aria-live="polite"><strong id="heading">Muitas formas de ser. Um espaço para todos.</strong><p id="description">Conhecer o outro é o primeiro passo para transformar o encontro.</p></div>
+<div class="controls"><button id="together" disabled>Reunir o grupo</button><button id="pause" disabled>Pausar animação</button><button id="reset" disabled>Restaurar visão</button></div>
+<footer>Experimente com mouse, toque ou pelos botões. Sem áudio.</footer>
+</main>
+<script type="module">
+const values=[['Respeito','#bc9aff','Reconhecer o valor de cada pessoa é abrir espaço para diferentes formas de viver.'],['Escuta','#6ad9cf','Ouvir com atenção nos aproxima de histórias e experiências diferentes das nossas.'],['Acesso','#ffcb72','Eliminar barreiras permite que mais pessoas participem e expressem seu potencial.'],['Encontro','#ff8eab','Quando nossas histórias se cruzam, surgem novas possibilidades.'],['Pertencimento','#8eaeff','Pertencer é poder estar presente e ser reconhecido como você é.']];
+const $=id=>document.getElementById(id),stage=$('stage');
+let select=()=>{};
+values.forEach((v,i)=>{const b=document.createElement('button');b.textContent=v[0];b.disabled=true;b.setAttribute('aria-pressed','false');b.onclick=()=>select(i);$('choices').append(b)});
+try{
+const THREE=await import('https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js');
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;stage.prepend(renderer.domElement);renderer.domElement.setAttribute('aria-label','Cinco personagens tridimensionais coloridas em um palco circular. Use os botões abaixo para selecionar.');renderer.domElement.setAttribute('role','img');
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(36,1,.1,100);camera.position.set(0,3.6,10.5);camera.lookAt(0,.8,0);
+scene.add(new THREE.HemisphereLight(0xffffff,0x524075,2.5));const light=new THREE.DirectionalLight(0xffefdc,3);light.position.set(-3,6,5);scene.add(light);
+const group=new THREE.Group();scene.add(group);
+const mat=color=>new THREE.MeshStandardMaterial({color,roughness:.45,metalness:.08});
+function mesh(geometry,material,parent,x,y,z){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
+mesh(new THREE.CylinderGeometry(3.6,3.7,.16,64),mat('#343651'),group,0,-.13,0);
+const ring=mesh(new THREE.TorusGeometry(3.4,.018,8,96),mat('#bda0ee'),group,0,-.035,0);ring.rotation.x=Math.PI/2;
+const people=[],targets=[],pickables=[];
+values.forEach((v,i)=>{
+ const person=new THREE.Group();group.add(person);const material=mat(v[1]);const h=[1.05,.88,1.2,.96,1.1][i];
+ mesh(new THREE.CapsuleGeometry(.23,h*.48,5,12),material,person,0,.65,0);
+ mesh(new THREE.SphereGeometry(.27,20,16),material,person,0,1.12+h*.2,0);
+ [-1,1].forEach(side=>{mesh(new THREE.CapsuleGeometry(.075,.34,4,8),material,person,side*.13,.21,0);const arm=mesh(new THREE.CapsuleGeometry(.07,.38,4,8),material,person,side*.36,.7,0);arm.rotation.z=side*.22;mesh(new THREE.SphereGeometry(.032,8,8),mat('#182236'),person,side*.09,1.15+h*.2,.245)});
+ person.traverse(o=>{if(o.isMesh){o.userData.index=i;pickables.push(o)}});people.push(person);targets.push(new THREE.Vector3((i-2)*1.15,0,0));person.position.copy(targets[i]);
+});
+let active=-1,joined=false,paused=matchMedia('(prefers-reduced-motion: reduce)').matches,angle=0,dragging=false,startX=0,startY=0,prevX=0;
+const buttons=[...$('choices').children];
+select=i=>{active=i;$('heading').textContent=values[i][0];$('description').textContent=values[i][2];buttons.forEach((b,n)=>b.setAttribute('aria-pressed',String(n===i)))};
+buttons.forEach(b=>b.disabled=false);['together','pause','reset'].forEach(id=>$(id).disabled=false);
+function pauseLabel(){$('pause').textContent=paused?'Retomar animação':'Pausar animação';$('pause').setAttribute('aria-pressed',String(paused))}pauseLabel();
+$('pause').onclick=()=>{paused=!paused;pauseLabel()};
+$('together').onclick=()=>{joined=!joined;targets.forEach((p,i)=>{if(joined){const a=(i/5)*Math.PI*2;p.set(Math.sin(a)*1.45,0,Math.cos(a)*.85)}else p.set((i-2)*1.15,0,0)});$('together').textContent=joined?'Abrir o grupo':'Reunir o grupo';$('together').setAttribute('aria-pressed',String(joined));$('heading').textContent='Juntos, ampliamos as possibilidades.';$('description').textContent='Diferenças que se aproximam criam um espaço mais acolhedor para todos.';active=-1;buttons.forEach(b=>b.setAttribute('aria-pressed','false'))};
+$('reset').onclick=()=>{angle=0};
+renderer.domElement.addEventListener('pointerdown',e=>{dragging=true;startX=prevX=e.clientX;startY=e.clientY;renderer.domElement.setPointerCapture(e.pointerId)});
+renderer.domElement.addEventListener('pointermove',e=>{if(dragging){angle+=(e.clientX-prevX)*.008;prevX=e.clientX}});
+const ray=new THREE.Raycaster();renderer.domElement.addEventListener('pointerup',e=>{dragging=false;if(Math.hypot(e.clientX-startX,e.clientY-startY)>8)return;const r=renderer.domElement.getBoundingClientRect();ray.setFromCamera(new THREE.Vector2((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1),camera);const hit=ray.intersectObjects(pickables)[0];if(hit)select(hit.object.userData.index)});renderer.domElement.addEventListener('pointercancel',()=>dragging=false);
+new ResizeObserver(()=>{const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.position.z=w/h<1.3?14:10.5;camera.updateProjectionMatrix()}).observe(stage);
+$('loading').remove();let previous=0,time=0;
+renderer.setAnimationLoop(ms=>{const dt=Math.min((ms-previous)/1000,.05);previous=ms;if(!paused)time+=dt;group.rotation.y=angle;people.forEach((p,i)=>{p.position.lerp(targets[i],1-Math.exp(-dt*7));p.position.y=paused?0:Math.sin(time*1.8+i)*.045;const s=active===i?1.13:1;p.scale.lerp(new THREE.Vector3(s,s,s),1-Math.exp(-dt*9));p.rotation.y=joined?Math.sin(time*.4+i)*.12:0});if(!document.hidden)renderer.render(scene,camera)});
+renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();$('description').textContent='A visualização 3D foi interrompida. Recarregue a página para tentar novamente.'});
+}catch(error){$('loading').textContent='A cena 3D não pôde ser carregada. Confira sua conexão e se o navegador oferece WebGL. Você ainda pode explorar os valores pelos botões.';select=i=>{$('heading').textContent=values[i][0];$('description').textContent=values[i][2];[...$('choices').children].forEach((b,n)=>b.setAttribute('aria-pressed',String(n===i)))};[...$('choices').children].forEach(b=>b.disabled=false);console.error(error)}
+</script>
+</html>
+		
+		</div>
       <div class="filter-bar" id="filterBar" role="group" aria-label="Filtrar pautas"></div>
       <div class="coverage-count" aria-live="polite"><strong id="coverageCount">0</strong> pautas visíveis</div>
       <div class="coverage-grid" id="coverageGrid"></div>
